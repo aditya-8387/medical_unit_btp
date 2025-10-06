@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Certificate</title>
+    <link rel="stylesheet" href="css/certificate_style.css" />
+    <style>
+        .form-section input,
+        .form-section textarea,
+        .form-section select {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            display: block;
+            font-size: 1em;
+        }
+        .form-section textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .signature-pad-container {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            vertical-align: top;
+        }
+        #signature-pad {
+            background-color: #f8f8f8;
+            display: block;
+            touch-action: none;
+            cursor: crosshair;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .action-buttons {
+             margin-top: 5px;
+             display: inline-block;
+             margin-left: 10px;
+             vertical-align: bottom;
+        }
+        .button-container button, .action-buttons button {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+        .button-container button {
+             background-color: #4caf50;
+        }
+        .action-buttons button.clear-btn {
+             background-color: #f44336;
+        }
+        .button-container button:hover {
+             background-color: #45a049;
+        }
+        .action-buttons button.clear-btn:hover {
+            background-color: #d32f2f;
+        }
+        .seal {
+           margin-top: 20px;
+           text-align: right;
+           font-weight: bold;
+           font-size: 0.9em;
+           line-height: 1.4;
+        }
+         .seal p {
+            margin: 2px 0;
+         }
+         .form-section label {
+             font-weight: bold;
+             margin-bottom: 3px;
+             display: inline-block;
+             margin-right: 5px;
+         }
+         .form-section .inline-group {
+             display: flex;
+             align-items: center;
+             gap: 15px;
+             margin-bottom: 15px;
+         }
+         .form-section .inline-group label {
+             margin-bottom: 0;
+             flex-shrink: 0;
+         }
+         .form-section .inline-group input,
+         .form-section .inline-group select {
+             margin-bottom: 0;
+             flex-grow: 1;
+             width: auto;
+         }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="letterhead">
+             <img src="assets/lnmiit-logo.png" alt="LNMIIT Logo" class="logo" />
+            <div class="institute-info">
+                <h2>The LNM Institute of Information Technology</h2>
+                <p>(Deemed-to-be-University)</p>
+                <p>Rupa ki Nangal, Post-Sumel, Via-Jamdoli, Jaipur-302031, Rajasthan, India</p>
+                <h3>Institute Medical Center</h3>
+            </div>
+        </div>
+
+        <hr style="border-top: 1px solid #ccc; margin: 15px 0;" />
+
+        <div class="certificate-body">
+            <div class="top-row">
+                <div><strong>Serial No:</strong> <span id="serialNo"></span></div>
+                 <div><strong>Date:</strong> <input type="date" id="date" style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;"/></div>
+            </div>
+
+            <h3 class="centered" style="text-decoration: underline; margin-bottom: 25px;">Medical Certificate</h3>
+
+            <div class="form-section">
+                <div class="inline-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Student's full name" readonly style="background-color: #eee;" />
+
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" placeholder="Years" required style="max-width: 80px;" />
+
+                    <label for="gender">Gender:</label>
+                    <select id="gender" required style="min-width: 120px;">
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <label for="diagnosis">Diagnosis:</label>
+                <textarea id="diagnosis" placeholder="Enter diagnosis details..." required></textarea>
+
+                <label for="rx">Prescription / Advice:</label>
+                <textarea id="rx" placeholder="Enter prescribed medications or advice..." required></textarea>
+
+                <label for="remarks">Remarks:</label>
+                <textarea id="remarks" placeholder="Remarks are auto-filled, can be edited..."></textarea>
+
+                <label for="relaxations">Relaxations Provided (Optional):</label>
+                <textarea id="relaxations" placeholder="Enter details of any relaxations provided (e.g., Academic relaxation, rest advice)"></textarea>
+
+                <label for="signature-pad" style="display: block; margin-top: 20px;">Signature:</label>
+                 <div style="display: flex; align-items: flex-end;">
+                    <div class="signature-pad-container">
+                         <canvas id="signature-pad" width="350" height="150"></canvas>
+                    </div>
+                     <div class="action-buttons">
+                        <button type="button" onclick="clearSignature()" class="clear-btn">Clear Signature</button>
+                     </div>
+                 </div>
+
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
+                 <div class="seal">
+                    <p>Dr. CHAND SINGH PANWAR</p>
+                    <p>Senior Medical Officer</p>
+                    <p>The LNM Institute of Information Technology</p>
+                    <p>RMC No. 31506</p>
+                </div>
+                <div class="button-container" style="margin-top: 0; text-align: right;"> <button type="button" onclick="issueCertificate()">Issue Certificate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/medical_certificate.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const storedDataString = localStorage.getItem('certificateData');
+            if (!storedDataString) return;
+            const certificateData = JSON.parse(storedDataString);
+            
+            document.getElementById("name").value = certificateData.name || '';
+            document.getElementById("diagnosis").value = certificateData.diagnosis || '';
+            document.getElementById("rx").value = certificateData.medications || '';
+            document.getElementById("remarks").value = certificateData.remarks || '';
+            document.getElementById("date").value = certificateData.date || new Date().toISOString().slice(0, 10);
+            document.getElementById("serialNo").textContent = "LNMIIT/MED/" + Math.floor(1000 + Math.random() * 9000);
+        });
+
+        function clearSignature() {
+            const canvas = document.getElementById("signature-pad");
+            if (canvas) {
+                const ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+            }
+        }
+
+        function isCanvasBlank(canvas) {
+            if (!canvas) return true;
+            const blank = document.createElement('canvas');
+            blank.width = canvas.width;
+            blank.height = canvas.height;
+            return canvas.toDataURL() === blank.toDataURL();
+        }
+
+        async function issueCertificate() {
+            const { jsPDF } = window.jspdf;
+            const canvas = document.getElementById("signature-pad");
+
+            const name = document.getElementById("name")?.value;
+            const age = document.getElementById("age")?.value;
+            const gender = document.getElementById("gender")?.value;
+            const date = document.getElementById("date")?.value;
+            const diagnosis = document.getElementById("diagnosis")?.value;
+            const rx = document.getElementById("rx")?.value;
+            const remarks = document.getElementById("remarks")?.value || "";
+            const relaxations = document.getElementById("relaxations")?.value || "";
+            const serialNo = document.getElementById("serialNo")?.textContent;
+            
+            const storedData = JSON.parse(localStorage.getItem('certificateData'));
+            const rollNo = storedData?.rollNo;
+            const recordId = storedData?.recordId;
+            const buttonIdToDisable = localStorage.getItem('certificateButtonId');
+
+            if (!rollNo || !recordId) { alert("Error: Student data is missing."); return; }
+            if (!name || !age || !gender || !date || !diagnosis || !rx || !serialNo) { alert("Please fill all required details."); return; }
+            if (isCanvasBlank(canvas)) { alert("Please provide a signature."); return; }
+
+            try {
+                const pdf = new jsPDF("p", "mm", "a4");
+                const marginLeft = 20;
+                const marginRight = 20;
+                const contentWidth = pdf.internal.pageSize.getWidth() - marginLeft - marginRight;
+                let y = 25;
+                
+                pdf.setFontSize(14);
+                pdf.setFont("helvetica", "bold");
+                pdf.text("The LNM Institute of Information Technology", pdf.internal.pageSize.getWidth() / 2, y, { align: "center" });
+                y += 5;
+                pdf.setFontSize(10);
+                pdf.setFont("helvetica", "normal");
+                pdf.text("(Deemed-to-be-University)", pdf.internal.pageSize.getWidth() / 2, y, { align: "center" });
+                y += 5;
+                pdf.text("Rupa ki Nangal, Post-Sumel, Via-Jamdoli, Jaipur-302031, Rajasthan, India", pdf.internal.pageSize.getWidth() / 2, y, { align: "center" });
+                y += 5;
+                pdf.setFontSize(12);
+                pdf.setFont("helvetica", "bold");
+                pdf.text("Institute Medical Center", pdf.internal.pageSize.getWidth() / 2, y, { align: "center" });
+                y += 8;
+
+                pdf.setFontSize(12);
+                pdf.setFont("helvetica", "normal");
+                pdf.text(`Serial No: ${serialNo}`, marginLeft, y);
+                pdf.text(`Date: ${new Date(date).toLocaleDateString('en-GB')}`, pdf.internal.pageSize.getWidth() - marginRight, y, { align: "right" });
+                y += 15;
+
+                pdf.setFont("helvetica", "bold");
+                pdf.text("Medical Certificate", pdf.internal.pageSize.getWidth() / 2, y, { align: "center" });
+                pdf.setLineWidth(0.5);
+                pdf.line(85, y + 1, 125, y + 1);
+                y += 15;
+                
+                pdf.setFontSize(12);
+                pdf.setFont("helvetica", "normal");
+                const introText = `This is to certify that Mr./Ms. ${name}, Age: ${age} years, Gender: ${gender}, Roll No: ${rollNo} was examined on ${new Date(date).toLocaleDateString('en-GB')}.`;
+                pdf.text(pdf.splitTextToSize(introText, contentWidth), marginLeft, y);
+                y += pdf.splitTextToSize(introText, contentWidth).length * 6 + 10;
+                
+                const addSection = (title, text) => {
+                    if (text && text.trim() !== "") {
+                        pdf.setFont("helvetica", "bold");
+                        pdf.text(title, marginLeft, y);
+                        y += 7;
+                        pdf.setFont("helvetica", "normal");
+                        const splitText = pdf.splitTextToSize(text, contentWidth);
+                        pdf.text(splitText, marginLeft, y);
+                        y += splitText.length * 6 + 10;
+                    }
+                };
+
+                addSection("Diagnosis:", diagnosis);
+                addSection("Prescription / Advice:", rx);
+                addSection("Remarks:", remarks);
+                addSection("Relaxations Provided:", relaxations);
+
+                const finalY = 240;
+                const signatureImgData = canvas.toDataURL("image/png");
+                pdf.addImage(signatureImgData, 'PNG', marginLeft, finalY - 10, 50, 25);
+                
+                pdf.setFontSize(11);
+                pdf.setFont("helvetica", "bold");
+                pdf.text("Dr. CHAND SINGH PANWAR", pdf.internal.pageSize.getWidth() - marginRight, finalY, { align: "right" });
+                pdf.setFont("helvetica", "normal");
+                pdf.text("Senior Medical Officer", pdf.internal.pageSize.getWidth() - marginRight, finalY + 5, { align: "right" });
+                pdf.text("The LNM Institute of Information Technology", pdf.internal.pageSize.getWidth() - marginRight, finalY + 10, { align: "right" });
+                pdf.text("RMC No. 31506", pdf.internal.pageSize.getWidth() - marginRight, finalY + 15, { align: "right" });
+                
+                const pdfBlob = pdf.output('blob');
+                const formData = new FormData();
+                formData.append('pdf', pdfBlob, `cert.pdf`);
+                formData.append('rollNo', rollNo);
+                formData.append('recordId', recordId);
+                formData.append('serialNo', serialNo);
+                formData.append('age', age);
+                formData.append('gender', gender);
+                formData.append('remarks', remarks);
+                formData.append('relaxations', relaxations);
+                
+                const token = localStorage.getItem('token');
+                const response = await fetch('/generate-and-save-certificate', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData,
+                });
+
+                const responseData = await response.json();
+                if (response.ok && responseData.success) {
+                    alert('Certificate generated!');
+                    if (window.opener && typeof window.opener.disableCertificateButton === 'function') {
+                        window.opener.disableCertificateButton(buttonIdToDisable);
+                    }
+                    localStorage.removeItem('certificateButtonId');
+                    localStorage.removeItem('certificateData');
+                    window.close();
+                } else {
+                    alert(`Error: ${responseData.error || 'Upload failed.'}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

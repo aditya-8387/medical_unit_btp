@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #222;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+h2 {
+    font-weight: 600;
+    color: #004085;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 15px;
+    border: 1px solid #e1e1e1;
+    text-align: center;
+}
+
+th {
+    background: #004085;
+    color: white;
+}
+
+td input,
+td textarea {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+button {
+    background: linear-gradient(135deg, #004085, #007bff);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #002a5c, #0056b3);
+    transform: translateY(-2px);
+}
+
+.button-container {
+    margin-top: 30px;
+}
+
+button.new-record {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border: none;
+    padding: 14px 26px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0px 5px 10px rgba(40, 167, 69, 0.4);
+    min-width: 200px;
+}
+
+button.new-record:hover {
+    background: linear-gradient(135deg, #1e7e34, #17a2b8);
+    box-shadow: 0px 8px 16px rgba(40, 167, 69, 0.6);
+    transform: translateY(-2px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-section {
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.records-section {
+    overflow-x: auto;
+}
+
+.records-table-container {
+    width: 100%;
+}
+
+.records-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.records-table-container th,
+.records-table-container td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.records-table-container th {
+    background: #004085;
+    color: white;
+}
+
+.issue-cert-btn {
+    background: linear-gradient(135deg, #007bff, #6c757d);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.issue-cert-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #545b62);
+}

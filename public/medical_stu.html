@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Medical Records</title>
+    <link rel="stylesheet" href="css/medical_stu.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="student-info">
+                <div>
+                    <h1>Medical Records</h1>
+                    <h3 id="student-name">Welcome</h3>
+                    <p>Roll No: <span id="student-rollno">Loading...</span></p>
+                </div>
+                <button class="emergency-btn">Emergency Call</button>
+            </div>
+        </div>
+
+        <div class="profile-details">
+            <h4>Hostel and Room Details</h4>
+            <div class="display-mode">
+                <div class="detail-item">
+                    <label>Hostel No:</label>
+                    <span id="student-hostel">Not Set</span>
+                </div>
+                <div class="detail-item">
+                    <label>Room No:</label>
+                    <span id="student-room">Not Set</span>
+                </div>
+            </div>
+            <div class="edit-mode">
+                <div class="detail-item">
+                    <label for="edit-hostel">Hostel No:</label>
+                    <input type="text" id="edit-hostel" placeholder="e.g., BH-3">
+                </div>
+                <div class="detail-item">
+                    <label for="edit-room">Room No:</label>
+                    <input type="text" id="edit-room" placeholder="e.g., C-305">
+                </div>
+            </div>
+             <div class="edit-controls">
+                <button id="edit-details-btn" class="display-mode">Edit Details</button>
+                <button id="save-details-btn" class="edit-mode">Save Changes</button>
+                <button id="cancel-details-btn" class="edit-mode">Cancel</button>
+            </div>
+             <p id="update-status" class="update-status-message"></p>
+        </div>
+
+        <div class="records-section">
+            <h2>Your Medical History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Diagnosis</th>
+                        <th>Medications</th>
+                        <th>Remarks</th>
+                        <th>Medical Certificate</th>
+                    </tr>
+                </thead>
+                <tbody id="records-table">
+                    <tr><td colspan="5" class="table-message">Loading history...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="js/medical_stu.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="css/inventory.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Inventory Management</h2>
+            <button id="back-to-dash-btn" class="back-btn">← Back to Dashboard</button>
+        </div>
+
+        <div class="actions-bar">
+            <!-- "Save All Changes" button is added here -->
+            <button id="save-changes-btn" class="update-btn">Save All Changes</button>
+            <button id="renew-stock-btn" class="renew-btn">Renew All Stock</button>
+        </div>
+
+        <div class="inventory-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Current Stock</th>
+                        <th>Max Stock</th>
+                        <!-- Header text changed -->
+                        <th class="actions-column">New Stock</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-table-body">
+                    <!-- Rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+         <div id="status-message" class="status-message"></div>
+    </div>
+    <script src="js/inventory.js"></script>
+</body>
+</html>
+

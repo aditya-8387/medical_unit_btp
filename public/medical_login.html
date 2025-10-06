@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Unit Login Page</title>
+    <link rel="stylesheet" href="css/medical_login.css">
+    <style>
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .input-field {
+            margin-bottom: 15px;
+        }
+
+        .input-field label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .input-field input, .input-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="assets/lnmiit-logo.png" alt="LNMIIT Logo" class="logo">
+        <h2>MEDICAL UNIT LOGIN PAGE</h2>
+        <form id="loginForm">
+            <div class="input-field">
+                <label for="role">Login as</label>
+                <select id="role" name="role" required>
+                    <option value="">Select</option>
+                    <option value="student">Student</option>
+                    <option value="medical-staff">Medical Staff</option>
+                </select>
+            </div>
+
+            <div id="rollno-field" class="input-field">
+                <label for="rollno">Roll No.</label>
+                <input type="text" id="rollno" name="rollno" placeholder="22UCS123">
+            </div>
+
+            <div class="input-field">
+                <label for="pass">Password</label>
+                <input type="password" id="pass" name="pass" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        // Hide/show Roll No. field based on role
+        document.getElementById('role').addEventListener('change', function () {
+            const rollField = document.getElementById('rollno-field');
+            if (this.value === 'medical-staff') {
+                rollField.style.display = 'none';
+                document.getElementById('rollno').required = false;
+            } else {
+                rollField.style.display = 'block';
+                document.getElementById('rollno').required = true;
+            }
+        });
+    </script>
+    <script src="js/medical_login.js"></script>
+</body>
+</html>

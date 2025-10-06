@@ -1,0 +1,99 @@
+body {
+  font-family: 'Georgia', serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 20px;
+}
+
+.certificate {
+  background: white;
+  width: 800px;
+  margin: auto;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.letterhead {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.logo {
+  width: 80px;
+  margin-right: 20px;
+}
+
+.institute-info h2,
+.institute-info h3 {
+  margin: 0;
+}
+
+.institute-info p {
+  margin: 2px 0;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.centered {
+  text-align: center;
+  margin: 20px 0;
+  text-decoration: underline;
+}
+
+.form-section label {
+  display: block;
+  margin: 10px 0 4px;
+  font-weight: bold;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+.signature-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.signature-pad-container {
+  text-align: center;
+}
+
+#signature-pad {
+  border: 1px solid #333;
+  background: #fff;
+  cursor: crosshair;
+}
+
+.seal {
+  text-align: right;
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+button {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}

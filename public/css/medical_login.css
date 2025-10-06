@@ -1,0 +1,129 @@
+/* public/css/medical_login.css */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: 'Arial', sans-serif; /* You can keep this or the one below */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* background: linear-gradient(135deg, orange, rgb(95, 241, 109)); */ /* Original gradient removed/commented */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    /* --- Background Image Settings --- */
+    /* Make sure 'background.jpg' or your image name exists in public/assets/ */
+    background-image: url('/assets/login_page_background.jpg'); /* Path relative to public folder */
+    background-size: cover;        /* Scale image to cover the entire viewport */
+    background-position: center;   /* Center the image */
+    background-repeat: no-repeat;  /* Prevent the image from tiling */
+    background-attachment: fixed;  /* Keeps background fixed during scroll */
+    background-color: #cccccc;     /* Fallback color if image fails */
+    /* --- End Background Image Settings --- */
+}
+
+/* Login Form Container Styling (from original file) */
+/* Minor tweak: Changed form selector to .login-container for clarity */
+.login-container { /* Changed from 'form' to target the div */
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+    border-radius: 12px;
+    padding: 35px; /* Slightly increased padding */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    width: 100%;
+    max-width: 400px; /* Increased max-width slightly */
+    text-align: center; /* Center logo and title */
+}
+
+/* Logo specific style */
+.login-container .logo {
+    width: 100px; /* Adjust as needed */
+    margin-bottom: 20px;
+}
+
+/* Title specific style */
+.login-container h2 {
+    margin-bottom: 25px; /* Increased spacing */
+    font-size: 22px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Input field styling (targetting divs within the form) */
+.login-container form .input-field {
+     margin-bottom: 20px; /* Increased spacing */
+     text-align: left; /* Align labels left */
+}
+
+.login-container form label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
+}
+
+.login-container form input,
+.login-container form select {
+    width: 100%;
+    padding: 12px 15px; /* Adjusted padding */
+    margin-bottom: 0; /* Removed margin-bottom here, added to .input-field */
+    border: 1px solid #ccc; /* Changed border style slightly */
+    border-radius: 6px; /* Slightly less rounded */
+    font-size: 15px; /* Slightly larger font */
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.login-container form input:focus,
+.login-container form select:focus {
+    border-color: #007bff; /* Highlight focus with blue */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* Subtle glow on focus */
+}
+
+/* Button Styling (within the form) */
+.login-container form button[type="submit"] {
+    width: 100%; /* Full width */
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    background-color: #007bff; /* Blue login button */
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin-top: 10px; /* Add some space above button */
+}
+
+.login-container form button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    opacity: 1; /* Remove previous opacity change */
+}
+
+.login-container form button[type="submit"]:active {
+     transform: scale(0.98); /* Slight press effect */
+}
+
+
+/* Styling for Roll Number Field Visibility (if needed) */
+#rollno-field {
+    /* Styles to show/hide are handled by inline style from JS */
+    /* transition: opacity 0.3s ease; /* Optional smooth transition */
+}
+
+
+/* --- Emergency features and other button styles from original file --- */
+/* --- You can keep or remove these if they are not relevant --- */
+
+/* .emergency-text-box { ... } */
+/* .emergency-text-box:focus { ... } */
+/* .emergency-text { ... } */
+/* .click-me-btn { ... } */
+/* .click-me-btn:hover { ... } */
+/* .emergency-button { ... } */
