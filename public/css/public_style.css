@@ -1,30 +1,58 @@
 /* General Body Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f7f6;
     color: #333;
     line-height: 1.6;
+    display: flex; /* For sticky footer or overall layout */
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Background Image Container */
+.background-image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/login_page_background.jpg'); /* Ensure this path is correct */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.7) blur(2px); /* Darken and blur the image */
+    z-index: -1; /* Send it to the back */
 }
 
 .container {
-    width: 80%;
+    width: 85%; /* Slightly wider */
+    max-width: 1200px; /* Max width for large screens */
     margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    padding: 2.5rem; /* More padding */
+    background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background for content */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+    border-radius: 12px; /* More rounded corners */
+    position: relative; /* To stay above the background */
+    z-index: 1;
 }
 
-/* Header and Navigation */
+/* ========================================= */
+/* Header and Navigation                     */
+/* ========================================= */
+
 .main-header {
-    background-color: #004466; /* A professional blue */
+    background-color: rgba(0, 68, 102, 0.9); /* Slightly transparent for effect */
     padding: 1rem 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: sticky; /* Make header sticky */
+    top: 0;
+    z-index: 100;
 }
 
 .logo-container {
@@ -33,13 +61,14 @@ body {
 }
 
 .logo-container img {
-    height: 50px;
+    height: 55px; /* Slightly larger logo */
     margin-right: 15px;
 }
 
 .logo-container h1 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.6rem; /* Slightly larger title */
+    font-weight: 600;
 }
 
 .main-nav ul {
@@ -50,16 +79,16 @@ body {
 }
 
 .main-nav li {
-    margin-left: 25px;
+    margin-left: 30px; /* More spacing */
 }
 
 .main-nav a {
     color: white;
     text-decoration: none;
-    font-size: 1rem;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1.05rem; /* Slightly larger font */
+    padding: 8px 15px; /* More padding */
+    border-radius: 7px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
 .main-nav a:hover,
@@ -67,45 +96,349 @@ body {
     background-color: #fff;
     color: #004466;
     font-weight: bold;
+    transform: translateY(-2px); /* Subtle lift on hover */
 }
 
-/* Page Content */
+/* ========================================= */
+/* Page Content & Cards                      */
+/* ========================================= */
+
+/* Hero Section for About Us */
+.hero-section {
+    text-align: center;
+    padding: 80px 40px; /* Generous padding */
+    background: linear-gradient(rgba(0, 68, 102, 0.8), rgba(0, 102, 153, 0.8)); /* Darker overlay for text contrast */
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section h2 {
+    font-size: 3.2rem; /* Large, impactful heading */
+    margin-bottom: 20px;
+    color: white; /* Ensure heading is white */
+    border-bottom: none; /* No border for hero title */
+}
+
+.hero-section p {
+    font-size: 1.4rem; /* Larger paragraph text */
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    line-height: 1.8;
+}
+
+.hero-section .btn-primary {
+    display: inline-block;
+    background-color: #ff9900; /* Bright call to action color */
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.hero-section .btn-primary:hover {
+    background-color: #e68a00;
+    transform: translateY(-3px);
+}
+
+/* General Headings and Paragraphs */
 h2 {
     color: #004466;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
+    font-size: 2.2rem; /* Larger section titles */
+    border-bottom: 3px solid #e0e0e0;
+    padding-bottom: 15px;
     margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    color: #005680;
+    font-size: 1.7rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
 }
 
 p {
     margin-bottom: 1rem;
+    font-size: 1.1rem; /* Slightly larger text */
 }
 
+/* Content Cards (for About Us sections like Vision) */
+.content-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 2rem; /* Spacing between cards */
+    margin-top: 2rem;
+}
+
+.content-card {
+    background-color: #f9fbfb;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+.content-card h3 {
+    color: #004466;
+    margin-top: 0;
+    font-size: 1.8rem;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.content-card p {
+    font-size: 1.05rem;
+}
+
+/* ========================================= */
+/* Styles for Our Services Page             */
+/* ========================================= */
+
+.page-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e0e7ee;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.service-card-icon {
+    font-size: 3.5rem; /* Icon size */
+    color: #004466;
+    margin-bottom: 1rem;
+}
+
+.service-card h3 {
+    font-size: 1.6rem;
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    color: #004466;
+}
+
+.service-card p {
+    font-size: 1.05rem;
+    color: #4a5568;
+    flex-grow: 1; /* Pushes timing info to the bottom */
+}
+
+.timing-info {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f0f4f8;
+}
+
+.timing-info strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.timing-info span {
+    font-size: 1rem;
+    color: #e53e3e; /* A highlight color for the time */
+    font-weight: 600;
+}
+
+/* ========================================= */
+/* Generic Styles for Other Pages            */
+/* ========================================= */
+
+/* Service & Announcement Items */
 .service-item,
 .announcement-item {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px dashed #ccc;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px dashed #cfd8dc;
 }
 .service-item:last-child,
 .announcement-item:last-child {
     border-bottom: none;
 }
+.service-item h3, .announcement-item h3 {
+    font-size: 1.8rem;
+    color: #004466;
+    margin-top: 0;
+}
+.service-item p, .announcement-item p {
+    font-size: 1.1rem;
+}
 
-h3 {
+/* Contact Info */
+.contact-info p {
+    font-size: 1.2rem; /* Larger contact text */
+    margin-bottom: 0.8rem;
+}
+
+/* ========================================= */
+/* Footer                                    */
+/* ========================================= */
+footer {
+    text-align: center;
+    padding: 2rem; /* More padding */
+    margin-top: auto; /* Pushes footer to bottom */
+    background-color: #2c3e50; /* Darker, more prominent footer */
+    color: #ecf0f1;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* To stay above background */
+    z-index: 1;
+}
+
+/* ========================================= */
+/* Responsive Adjustments                    */
+/* ========================================= */
+
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        padding: 1rem 5%;
+    }
+    .main-nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    .main-nav li {
+        margin: 5px 10px;
+    }
+    .logo-container h1 {
+        font-size: 1.3rem;
+    }
+    .container {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 1rem auto;
+    }
+    .hero-section {
+        padding: 50px 20px;
+    }
+    .hero-section h2 {
+        font-size: 2.2rem;
+    }
+    .hero-section p {
+        font-size: 1.1rem;
+    }
+    h2 {
+        font-size: 1.8rem;
+    }
+    h3 {
+        font-size: 1.4rem;
+    }
+    p {
+        font-size: 1rem;
+    }
+    .content-card {
+        padding: 20px;
+    }
+}
+/* ========================================= */
+/* Styles for Contact Us Page               */
+/* ========================================= */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.contact-card-main {
+    background-color: #ffffff;
+    border: 1px solid #e0e7ee;
+    border-left: 5px solid #004466;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.contact-card-main.emergency {
+    border-left-color: #e53e3e;
+}
+
+.contact-card-main h3 {
+    margin-top: 0;
+    font-size: 1.6rem;
     color: #333;
 }
 
-.contact-info p {
-    font-size: 1.1rem;
+.contact-card-main p {
     margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #4a5568;
 }
 
-/* Footer */
-footer {
-    text-align: center;
-    padding: 1.5rem;
+.contact-card-main .phone-number {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #004466;
+}
+
+.contact-card-main.emergency .phone-number {
+    color: #e53e3e;
+}
+
+.directory-table-container {
+    overflow-x: auto; /* Ensures table is responsive */
     margin-top: 2rem;
-    background-color: #333;
-    color: #f4f4f4;
+}
+
+.staff-directory-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+}
+
+.staff-directory-table th,
+.staff-directory-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e7ee;
+}
+
+.staff-directory-table thead th {
+    background-color: #004466;
+    color: white;
+    font-weight: 600;
+}
+
+.staff-directory-table tbody tr:nth-of-type(even) {
+    background-color: #f8f9fa;
+}
+
+.staff-directory-table tbody tr:hover {
+    background-color: #e9ecef;
 }
