@@ -90,6 +90,12 @@ const authenticateToken = (req, res, next) => {
 
 // --- ROUTES ---
 
+
+// Homepage Route: Serve the about_us.html page as the main entry point
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'about_us.html'));
+});
+
 app.post('/login', async (req, res) => {
     const { roll_no, password, role } = req.body;
     if (!roll_no || !password || !role) {
