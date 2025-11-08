@@ -41,7 +41,7 @@ Digital Signature Pad: Doctors can sign certificates directly on-screen before i
 
 Certificates are saved as PDFs and linked to the patient's record.
 
-🛠️ Tech Stack
+ Tech Stack
 Frontend: HTML5, CSS3, Vanilla JavaScript
 
 Backend: Node.js, Express.js
