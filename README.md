@@ -1,7 +1,7 @@
 Institute Medical Center Management System
 A comprehensive full-stack web application designed to digitalize operations for a university medical center. This system manages patient records, streamlines medicine inventory, and provides separate portals for students and medical staff.
 
-🚀 Features
+ Features
 Public Portal
 Information Hub: Accessible pages for About Us, Medical Services, and latest Announcements.
 
@@ -9,7 +9,7 @@ Emergency Contacts: Quick access to ambulance and medical officer contact detail
 
 Staff Directory: Detailed list of available doctors, specialists, and their visiting hours.
 
-👨‍🎓 Student Portal
+ Student Portal
 Secure Login: Authentication using university Roll Number.
 
 Personal Dashboard: View and update hostel/room details.
@@ -20,7 +20,7 @@ Digital Certificates: Download previously issued medical certificates directly a
 
 Emergency Action: One-click emergency call button.
 
-👨‍⚕️ Medical Staff Portal
+ Medical Staff Portal
 Patient Intake: Rapid data entry for new patient visits using Roll Numbers.
 
 Smart Prescription System: Integrated medicine search with real-time stock visibility.
@@ -60,7 +60,7 @@ mysql2: For database connection pooling and transaction management.
 
 Choices.js: For searchable medication dropdowns.
 
-⚙️ Local Installation & Setup
+ Local Installation & Setup
 Follow these steps to run the project locally.
 
 Prerequisites
@@ -123,7 +123,7 @@ npm run dev
 node app.js
 Access the application at http://localhost:3000.
 
-📂 Project Structure
+ Project Structure
 medical_unit_btp/
 ├── public/                 # Static files served by Express
 │   ├── assets/             # Images and logos
@@ -134,14 +134,14 @@ medical_unit_btp/
 ├── app.js                  # Main application entry point & server logic
 ├── package.json            # Project dependencies
 └── .env                    # Environment variables (not listed in repo)
-🛡️ Security Notables
+ Security Notables
 Transactions: Critical operations (like prescribing medicine) use SQL transactions to ensure inventory is only deducted if the patient record is successfully saved.
 
 Password Hashing: User passwords are securely hashed using bcrypt.
 
 Role-Based Access Control: Middleware ensures students cannot access staff API endpoints and vice-versa.
 
-👥 Authors
+ Authors
 Aditya Garg-22UCS006  
 Dhruv Agrawal-22UCS235
 Anirudh Daga-22UCC015
