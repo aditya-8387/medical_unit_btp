@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- GLOBAL STATE ---
     let currentPrescription = [];
     const token = localStorage.getItem('token');
+    
+    // Get the sub_role to check for doctor/nurse permissions
+    const sub_role = localStorage.getItem('sub_role');
 
     if (!token) {
         window.location.href = 'medical_login.html';
@@ -40,20 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     confirmPrescriptionBtn.addEventListener('click', handleConfirmPrescription);
     recordForm.addEventListener('submit', handleFormSubmit);
-    rollNoInput.addEventListener('blur', fetchStudentName);
-
-    medicationSelect.addEventListener('change', (event) => {
-        if (!event.detail.value) return;
-        const medName = event.detail.value;
-        const isAlreadyAdded = currentPrescription.some(p => p.name === medName);
-        if (!isAlreadyAdded) {
-            currentPrescription.push({ name: medName, qty: 1 });
-            updatePrescriptionTable();
-        }
-        choices.clearInput();
-        choices.setChoiceByValue('');
-        choices.hideDropdown();
-    });
+    
+    rollNoInput.addEventListener('blur', fetchPatientName); 
 
     if (datePicker) {
         const initialDate = getToday();
@@ -61,6 +52,21 @@ document.addEventListener("DOMContentLoaded", () => {
         datePicker.addEventListener('change', () => loadRecordsForDate(datePicker.value));
         loadRecordsForDate(initialDate);
     }
+    
+    // --- [THIS IS THE EVENT LISTENER THAT WASNT FIRING] ---
+    medicationSelect.addEventListener('change', (event) => {
+        if (!event.detail.value) return; // Ignore if the placeholder is "selected"
+        const medName = event.detail.value;
+        const isAlreadyAdded = currentPrescription.some(p => p.name === medName);
+        if (!isAlreadyAdded) {
+            currentPrescription.push({ name: medName, qty: 1 });
+            updatePrescriptionTable();
+        }
+        // These lines reset the dropdown so you can add another medicine
+        choices.clearInput();
+        choices.setChoiceByValue('');
+        choices.hideDropdown();
+    });
 
     // --- FUNCTIONS ---
     async function populateMedicines() {
@@ -73,8 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     label: `${med.medicine} (Stock: ${med.stock})`,
                     disabled: med.stock === 0
                 }));
-                medicineOptions.unshift({ value: '', label: 'Type to search...', selected: true, disabled: true });
-                choices.setChoices(medicineOptions, 'value', 'label', false);
+                
+                // --- FIX IS HERE ---
+                // 1. The conflicting unshift() line has been REMOVED.
+                // 2. The last argument is set to 'true' to properly replace the choices.
+                choices.setChoices(medicineOptions, 'value', 'label', true);
+                // --- END FIX ---
+                
             }
         } catch (error) { console.error("Failed to load medicines:", error); }
     }
@@ -122,16 +133,19 @@ document.addEventListener("DOMContentLoaded", () => {
     async function handleFormSubmit(e) {
         e.preventDefault();
         const remarksInput = document.getElementById("remarks");
+        
         const record = {
-            roll_no: rollNoInput.value.trim(),
+            patient_id: rollNoInput.value.trim(),
             diagnosis: document.getElementById('diagnosis').value.trim(),
             remarks: remarksInput.value.trim(),
-            medications: currentPrescription
+            medications: currentPrescription 
         };
-        if (!record.roll_no || !record.diagnosis) {
-            alert('Please fill in Roll No and Diagnosis.');
+        
+        if (!record.patient_id || !record.diagnosis) {
+            alert('Please fill in Patient ID and Diagnosis.');
             return;
         }
+        
         try {
             const response = await fetch('/medical/staff/record', {
                 method: 'POST',
@@ -152,14 +166,17 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) { alert(`Error: ${error.message}`); }
     }
 
-    async function fetchStudentName() {
-        const rollNo = rollNoInput.value.trim();
+    async function fetchPatientName() {
+        const patientId = rollNoInput.value.trim();
         studentNameInput.value = '';
-        if (!rollNo) return;
+        if (!patientId) return;
+        
         try {
-            const response = await fetch(`/student/${rollNo}`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const response = await fetch(`/api/patient-lookup/${patientId}`, { 
+                headers: { 'Authorization': `Bearer ${token}` } 
+            });
             const result = await response.json();
-            studentNameInput.value = result.success ? result.name : 'Student not found';
+            studentNameInput.value = result.success ? result.name : 'Patient not found';
         } catch(err) {
             studentNameInput.value = 'Error fetching name';
         }
@@ -183,32 +200,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 const row = tableBody.insertRow();
                 row.insertCell().textContent = new Date(record.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 row.insertCell().textContent = escapeHtml(record.name);
-                row.insertCell().textContent = escapeHtml(record.roll_no);
+                row.insertCell().textContent = escapeHtml(record.patient_id); 
                 row.insertCell().textContent = escapeHtml(record.diagnosis);
                 row.insertCell().textContent = escapeHtml(record.medications || 'N/A');
                 row.insertCell().textContent = escapeHtml(record.remarks || 'N/A');
                 
                 const actionCell = row.insertCell();
-                const certButton = document.createElement('button');
-                certButton.id = `issue-cert-btn-${record.recordId}`;
-                certButton.className = 'issue-cert-btn';
-                certButton.dataset.recordId = record.recordId;
-                certButton.dataset.rollNo = record.roll_no;
-                certButton.dataset.name = record.name;
-                certButton.dataset.diagnosis = record.diagnosis;
-                certButton.dataset.medications = record.medications;
-                certButton.dataset.remarks = record.remarks;
-                certButton.dataset.buttonId = certButton.id;
+                
+                if (sub_role === 'doctor') {
+                    const certButton = document.createElement('button');
+                    certButton.id = `issue-cert-btn-${record.recordId}`;
+                    certButton.className = 'issue-cert-btn';
+                    certButton.dataset.recordId = record.recordId;
+                    certButton.dataset.rollNo = record.patient_id;
+                    certButton.dataset.name = record.name;
+                    certButton.dataset.diagnosis = record.diagnosis;
+                    certButton.dataset.medications = record.medications;
+                    certButton.dataset.remarks = record.remarks;
+                    certButton.dataset.buttonId = certButton.id;
 
-                if (record.hasCertificate) {
-                    certButton.textContent = 'Certificate Issued';
-                    certButton.disabled = true;
-                    certButton.style.cssText = 'cursor: not-allowed; background-color: #6c757d;';
+                    if (record.hasCertificate) {
+                        certButton.textContent = 'Certificate Issued';
+                        certButton.disabled = true;
+                        certButton.style.cssText = 'cursor: not-allowed; background-color: #6c757d;';
+                    } else {
+                        certButton.textContent = '+ Issue Medical Certificate';
+                        certButton.onclick = () => openCertificateTemplate(certButton.dataset);
+                    }
+                    actionCell.appendChild(certButton);
                 } else {
-                    certButton.textContent = '+ Issue Medical Certificate';
-                    certButton.onclick = () => openCertificateTemplate(certButton.dataset);
+                    actionCell.textContent = 'N/A';
                 }
-                actionCell.appendChild(certButton);
             });
         } catch (error) {
             tableBody.innerHTML = `<tr><td colspan="7" style="color:red;">Error: ${error.message}</td></tr>`;
@@ -249,5 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
     
+    // Call this at the end to initialize the modal table
     updatePrescriptionTable();
 });

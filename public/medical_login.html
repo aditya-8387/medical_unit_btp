@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Unit Login</title>
-    <link rel="stylesheet" href="css/medical_login.css">
+    <!-- Assumes css/medical_login.css exists and is styled -->
+    <!-- You might need to update css/medical_login.css if you copied it from the old project -->
+    <link rel="stylesheet" href="css/medical_login.css"> 
+    <link rel="stylesheet" href="css/public_style.css"> <!-- Added public_style for header -->
 </head>
 <body>
 
+    <!-- Standard Public Header -->
     <header class="main-header">
         <div class="logo-container">
             <img src="assets/lnmiit-logo.png" alt="LNMIIT Logo">
@@ -24,6 +28,7 @@
         </nav>
     </header>
 
+    <!-- Updated Login Container -->
     <div class="login-container">
         <img src="assets/lnmiit-logo.png" alt="LNMIIT Logo" class="logo">
         <h2>MEDICAL UNIT LOGIN</h2>
@@ -31,16 +36,20 @@
         <form id="loginForm" class="login-form">
             <div class="input-field">
                 <label for="role">Login as</label>
+                <!-- Updated select dropdown with all 4 roles -->
                 <select id="role" name="role" required>
                     <option value="" disabled selected>Select your role</option>
                     <option value="student">Student</option>
+                    <option value="employee">Employee</option>
                     <option value="medical-staff">Medical Staff</option>
+                    <option value="admin">Admin</option>
                 </select>
             </div>
 
+            <!-- This field is now generic for Roll No. or Employee Code -->
             <div id="rollno-field" class="input-field">
-                <label for="rollno">Roll No.</label>
-                <input type="text" id="rollno" name="rollno" placeholder="e.g., 22UCS123" required>
+                <label for="rollno">Roll No. / Employee Code</label>
+                <input type="text" id="rollno" name="rollno" placeholder="Enter your ID" required>
             </div>
 
             <div class="input-field">
@@ -52,6 +61,10 @@
         </form>
     </div>
 
+    <!-- 
+      IMPORTANT: You must also update medical_login.js 
+      to handle the new roles and new 'rollno' field label.
+    -->
     <script src="js/medical_login.js"></script>
 </body>
 </html>

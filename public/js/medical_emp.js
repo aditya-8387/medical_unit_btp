@@ -1,7 +1,7 @@
 /**
- * Handles all logic for the Student Portal (medical_stu.html)
+ * Handles all logic for the Employee Portal (medical_emp.html)
  * - Fetches medical records
- * - Allows updating profile details (hostel/room)
+ * - Allows updating profile details (designation/department)
  * - Uses token-based authentication
  */
 document.addEventListener("DOMContentLoaded", async () => {
@@ -9,27 +9,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     // --- 1. Get User Data from Storage ---
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
-    const userId = localStorage.getItem('userId'); // This is the roll_no
+    const userId = localStorage.getItem('userId'); // This is the emp_code
     const name = localStorage.getItem('name');
-    let currentHostel = localStorage.getItem('hostel_no');
-    let currentRoom = localStorage.getItem('room_no');
+    let currentDesignation = localStorage.getItem('designation');
+    let currentDepartment = localStorage.getItem('department');
     
     // --- 2. Authentication Check ---
-    // If no token, or if a non-student lands here, redirect to login
-    if (!token || role !== 'student') {
+    if (!token || role !== 'employee') {
         localStorage.clear(); // Clear bad data
         window.location.href = 'medical_login.html';
         return;
     }
 
     // --- 3. Get Element References ---
-    const rollnoElement = document.getElementById('student-rollno');
-    const studentNameElement = document.getElementById('student-name');
+    const idElement = document.getElementById('employee-id');
+    const nameElement = document.getElementById('employee-name');
     const profileDetailsSection = document.querySelector('.profile-details');
-    const hostelDisplay = document.getElementById('student-hostel');
-    const roomDisplay = document.getElementById('student-room');
-    const hostelInput = document.getElementById('edit-hostel');
-    const roomInput = document.getElementById('edit-room');
+    const designationDisplay = document.getElementById('employee-designation');
+    const departmentDisplay = document.getElementById('employee-department');
+    const designationInput = document.getElementById('edit-designation');
+    const departmentInput = document.getElementById('edit-department');
     const editButton = document.getElementById('edit-details-btn');
     const saveButton = document.getElementById('save-details-btn');
     const cancelButton = document.getElementById('cancel-details-btn');
@@ -37,19 +36,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const emergencyBtn = document.querySelector('.emergency-btn');
 
     // --- 4. Populate Static Page Data ---
-    if (rollnoElement) rollnoElement.textContent = escapeHtml(userId);
-    if (studentNameElement) studentNameElement.textContent = `Welcome, ${escapeHtml(name)}`;
+    if (idElement) idElement.textContent = escapeHtml(userId);
+    if (nameElement) nameElement.textContent = `Welcome, ${escapeHtml(name)}`;
     if (emergencyBtn) emergencyBtn.onclick = () => window.location.href = `tel:+911234567890`; // Example number
 
     /**
-     * Helper to display hostel/room, showing "Not Set" if null/empty.
+     * Helper to display profile details, showing "Not Set" if null/empty.
      */
-    function displayProfileDetails(hostel, room) {
+    function displayProfileDetails(designation, department) {
         const displayValue = (value) => (value && value !== 'null' && value.trim() !== '') ? escapeHtml(value) : 'Not Set';
-        if (hostelDisplay) hostelDisplay.textContent = displayValue(hostel);
-        if (roomDisplay) roomDisplay.textContent = displayValue(room);
+        if (designationDisplay) designationDisplay.textContent = displayValue(designation);
+        if (departmentDisplay) departmentDisplay.textContent = displayValue(department);
     }
-    displayProfileDetails(currentHostel, currentRoom); // Initial display
+    displayProfileDetails(currentDesignation, currentDepartment); // Initial display
 
     /**
      * Toggles the edit/display mode for the profile section.
@@ -63,9 +62,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // --- 5. Event Listeners for Profile Edit ---
     if (editButton) {
         editButton.addEventListener('click', () => {
-            // Pre-fill inputs with current data
-            hostelInput.value = (currentHostel && currentHostel !== 'null') ? currentHostel : '';
-            roomInput.value = (currentRoom && currentRoom !== 'null') ? currentRoom : '';
+            designationInput.value = (currentDesignation && currentDesignation !== 'null') ? currentDesignation : '';
+            departmentInput.value = (currentDepartment && currentDepartment !== 'null') ? currentDepartment : '';
             toggleEditMode(true);
         });
     }
@@ -78,8 +76,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (saveButton) {
         saveButton.addEventListener('click', async () => {
-            const newHostel = hostelInput.value.trim();
-            const newRoom = roomInput.value.trim();
+            const newDesignation = designationInput.value.trim();
+            const newDepartment = departmentInput.value.trim();
             
             saveButton.textContent = 'Saving...';
             saveButton.disabled = true;
@@ -93,8 +91,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         'Authorization': `Bearer ${token}` // Send token for auth
                     },
                     body: JSON.stringify({ 
-                        hostel_no: newHostel, 
-                        room_no: newRoom 
+                        designation: newDesignation, 
+                        department: newDepartment 
                     })
                 });
                 
@@ -102,13 +100,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (!response.ok) throw new Error(result.error || 'Failed to save details.');
                 
                 // Update local state and storage
-                currentHostel = newHostel || null;
-                currentRoom = newRoom || null;
-                localStorage.setItem('hostel_no', currentHostel || '');
-                localStorage.setItem('room_no', currentRoom || '');
+                currentDesignation = newDesignation || null;
+                currentDepartment = newDepartment || null;
+                localStorage.setItem('designation', currentDesignation || '');
+                localStorage.setItem('department', currentDepartment || '');
                 
                 // Update UI
-                displayProfileDetails(currentHostel, currentRoom);
+                displayProfileDetails(currentDesignation, currentDepartment);
                 toggleEditMode(false);
                 updateStatusElement.textContent = 'Details updated successfully!';
                 updateStatusElement.style.color = 'green';
@@ -119,7 +117,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             } finally {
                 saveButton.textContent = 'Save Changes';
                 saveButton.disabled = false;
-                // Clear status message after 3 seconds
                 setTimeout(() => { updateStatusElement.textContent = ''; }, 3000);
             }
         });
@@ -156,15 +153,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     row.insertCell().textContent = escapeHtml(rec.medications || 'N/A');
                     row.insertCell().textContent = escapeHtml(rec.remarks || 'N/A');
 
-                    // Handle certificate download link
                     const certificateCell = row.insertCell();
                     if (rec.certificate_download_path) {
                         const downloadLink = document.createElement('a');
-                        // Use the direct path from the server
                         downloadLink.href = rec.certificate_download_path;
                         downloadLink.textContent = 'Download';
                         downloadLink.className = 'download-cert-link';
-                        downloadLink.target = '_blank'; // Open in new tab
+                        downloadLink.target = '_blank';
                         certificateCell.appendChild(downloadLink);
                     } else {
                         certificateCell.textContent = 'N/A';

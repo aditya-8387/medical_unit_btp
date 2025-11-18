@@ -1,100 +1,110 @@
-document.querySelector('form').addEventListener('submit', async function(e) {
-    e.preventDefault();
+/**
+ * Handles login form submission for all user roles (Student, Employee, Staff, Admin)
+ * and dynamic UI changes on the login page.
+ */
 
-    const role = document.getElementById('role').value;
-    const rollno = document.getElementById('rollno').value;
-    const pass = document.getElementById('pass').value;
+document.addEventListener('DOMContentLoaded', () => {
 
-    if (!role || !pass) {
-        alert("Please fill all required fields.");
-        return;
-    }
+    const loginForm = document.getElementById('loginForm');
+    const roleSelect = document.getElementById('role');
+    const rollnoField = document.getElementById('rollno-field'); // The div container
+    const rollnoInput = document.getElementById('rollno');
+    const rollnoLabel = rollnoField.querySelector('label');
 
-    // For students, roll number is required
-    if (role === 'student' && !rollno) {
-        alert("Please enter your Roll Number.");
-        return;
-    }
+    // --- Form Submission Handler ---
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-    console.log('Attempting login with:', {
-        roll_no: role === 'medical-staff' ? 'medstaff' : rollno, // Use 'medstaff' for staff role
-        role: role,
-        password: pass
+        const role = roleSelect.value;
+        const userId = rollnoInput.value.trim(); // This is the ID (Roll No or Emp Code)
+        const pass = document.getElementById('pass').value;
+
+        if (!role || !userId || !pass) {
+            alert("Please fill all required fields.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    roll_no: userId, // The backend expects this key for the ID
+                    password: pass,
+                    role: role
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                // Login successful, store all data from server
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.role);
+                localStorage.setItem('name', data.name);
+                localStorage.setItem('userId', userId); // Store the ID they logged in with
+                
+                // --- MODIFICATION HERE ---
+                // Store the sub_role (e.g., 'doctor', 'nurse') or an empty string
+                localStorage.setItem('sub_role', data.sub_role || '');
+                // --- END MODIFICATION ---
+
+                // Store role-specific data (even if null, to clear old data)
+                localStorage.setItem('hostel_no', data.hostel_no || '');
+                localStorage.setItem('room_no', data.room_no || '');
+                localStorage.setItem('designation', data.designation || '');
+                localStorage.setItem('department', data.department || '');
+
+                // === UPDATED REDIRECT LOGIC ===
+                if (role === 'student') {
+                    window.location.href = 'medical_stu.html';
+                } else if (role === 'employee') {
+                    window.location.href = 'medical_emp.html';
+                } else if (role === 'medical-staff') {
+                    window.location.href = 'medical_staff.html';
+                } else if (role === 'admin') {
+                    // *** NEW REDIRECT ***
+                    window.location.href = 'admin.html';
+                }
+            } else {
+                // Show error message from backend or a default one
+                alert(data.error || 'Login failed. Please check credentials.');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred during login. Please try again.');
+        }
     });
 
-    try {
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                roll_no: role === 'medical-staff' ? 'medstaff' : rollno, // Use 'medstaff' for staff role
-                password: pass,
-                role: role
-            })
-        });
+    // --- Role Change Listener (for UI) ---
+    // Updates the placeholder text for the ID field based on role.
+    roleSelect.addEventListener('change', function () {
+        const selectedRole = this.value;
 
-        const data = await response.json();
-
-        if (response.ok && data.success) { // Check data.success
-            // Store common items
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('role', data.role);
-            localStorage.setItem('studentName', data.name); // Store name
-
-            // Store student-specific items
-            if (role === 'student') {
-                localStorage.setItem('rollno', rollno); // Store rollno used for login
-
-                // Store hostel and room details if provided by backend
-                if (data.hostel_no !== undefined && data.hostel_no !== null) {
-                    localStorage.setItem('hostel_no', data.hostel_no);
-                } else {
-                     localStorage.removeItem('hostel_no'); // Clear if null/undefined
-                }
-                if (data.room_no !== undefined && data.room_no !== null) {
-                     localStorage.setItem('room_no', data.room_no);
-                } else {
-                    localStorage.removeItem('room_no'); // Clear if null/undefined
-                }
-            }
-
-            // Redirect based on role
-            if (role === 'student') {
-                window.location.href = 'medical_stu.html';
-            } else if (role === 'medical-staff') {
-                window.location.href = 'medical_staff.html';
-            }
+        if (selectedRole === 'student') {
+            rollnoLabel.textContent = 'Roll No.';
+            rollnoInput.placeholder = 'e.g., 22UCS123';
+            rollnoField.style.display = 'block';
+            rollnoInput.required = true;
+        } else if (selectedRole === 'employee') {
+            rollnoLabel.textContent = 'Employee Code';
+            rollnoInput.placeholder = 'e.g., E101';
+            rollnoField.style.display = 'block';
+            rollnoInput.required = true;
+        } else if (selectedRole === 'medical-staff' || selectedRole === 'admin') {
+            rollnoLabel.textContent = 'Employee Code / ID';
+            rollnoInput.placeholder = 'Enter your staff ID';
+            rollnoField.style.display = 'block';
+            rollnoInput.required = true;
         } else {
-            // Show error message from backend or a default one
-            alert(data.error || 'Login failed. Please check credentials.');
+            // Default state if no role is selected
+            rollnoLabel.textContent = 'Roll No. / Employee Code';
+            rollnoInput.placeholder = 'Enter your ID';
         }
-    } catch (error) {
-        console.error('Login error:', error);
-        alert('An error occurred during login. Please try again.');
-    }
-});
+    });
 
-// Hide/show Roll No. field based on role selection
-document.getElementById('role').addEventListener('change', function () {
-    const rollField = document.getElementById('rollno-field');
-    const rollInput = document.getElementById('rollno');
-    if (this.value === 'medical-staff') {
-        rollField.style.display = 'none';
-        rollInput.required = false;
-        rollInput.value = ''; // Clear value if switching to staff
-    } else {
-        rollField.style.display = 'block';
-        rollInput.required = true;
-    }
-});
-
-// Initialize roll number field visibility on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const roleSelect = document.getElementById('role');
-    if (roleSelect.value === 'medical-staff') {
-        document.getElementById('rollno-field').style.display = 'none';
-        document.getElementById('rollno').required = false;
-    }
+    // Initialize field state on page load (in case a role is pre-selected)
+    roleSelect.dispatchEvent(new Event('change'));
 });

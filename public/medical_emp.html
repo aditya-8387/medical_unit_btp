@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Medical Records</title>
+    <title>Employee Medical Records</title>
+    <!-- Using the same CSS as the student page for a consistent look -->
     <link rel="stylesheet" href="css/medical_stu.css">
 </head>
 <body>
@@ -12,33 +13,34 @@
             <div class="student-info">
                 <div>
                     <h1>Medical Records</h1>
-                    <h3 id="student-name">Welcome</h3>
-                    <p>Roll No: <span id="student-rollno">Loading...</span></p>
+                    <h3 id="employee-name">Welcome, [Employee Name]</h3>
+                    <p>Employee Code: <span id="employee-id">Loading...</span></p>
                 </div>
-                <button class="emergency-btn">Logout</button>
+                <button class="emergency-btn">Emergency Call</button>
             </div>
         </div>
 
+        <!-- This section is now for Employee Details -->
         <div class="profile-details">
-            <h4>Hostel and Room Details</h4>
+            <h4>Your Profile Details</h4>
             <div class="display-mode">
                 <div class="detail-item">
-                    <label>Hostel No:</label>
-                    <span id="student-hostel">Not Set</span>
+                    <label>Designation:</label>
+                    <span id="employee-designation">Not Set</span>
                 </div>
                 <div class="detail-item">
-                    <label>Room No:</label>
-                    <span id="student-room">Not Set</span>
+                    <label>Department:</label>
+                    <span id="employee-department">Not Set</span>
                 </div>
             </div>
             <div class="edit-mode">
                 <div class="detail-item">
-                    <label for="edit-hostel">Hostel No:</label>
-                    <input type="text" id="edit-hostel" placeholder="e.g., BH-3">
+                    <label for="edit-designation">Designation:</label>
+                    <input type="text" id="edit-designation" placeholder="e.g., Professor">
                 </div>
                 <div class="detail-item">
-                    <label for="edit-room">Room No:</label>
-                    <input type="text" id="edit-room" placeholder="e.g., C-305">
+                    <label for="edit-department">Department:</label>
+                    <input type="text" id="edit-department" placeholder="e.g., CSE">
                 </div>
             </div>
              <div class="edit-controls">
@@ -49,6 +51,7 @@
              <p id="update-status" class="update-status-message"></p>
         </div>
 
+        <!-- This section is the same as the student page -->
         <div class="records-section">
             <h2>Your Medical History</h2>
             <table>
@@ -67,6 +70,7 @@
             </table>
         </div>
     </div>
-    <script src="js/medical_stu.js"></script>
+    <!-- Make sure to link to the new employee JS file -->
+    <script src="js/medical_emp.js"></script>
 </body>
 </html>

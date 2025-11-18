@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activate Student Account</title>
+    <link rel="stylesheet" href="css/medical_login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Activate Student Account</h2>
+        <form id="registerForm" class="login-form">
+            <div class="input-field">
+                <label for="rollno">Roll No.</label>
+                <input type="text" id="rollno" name="rollno" required>
+            </div>
+            <div class="input-field">
+                <label for="pass">New Password</label>
+                <input type="password" id="pass" name="pass" required>
+            </div>
+            <div class="input-field">
+                <label for="confirm-pass">Confirm Password</label>
+                <input type="password" id="confirm-pass" name="confirm-pass" required>
+            </div>
+            <button type="submit">Activate Account</button>
+        </form>
+        <p style="text-align: center; margin-top: 15px;">
+            Already activated? <a href="medical_login.html">Login here</a>
+        </p>
+    </div>
+    <script src="js/register.js"></script>
+</body>
+</html>

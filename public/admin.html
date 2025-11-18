@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - User Management</title>
+    <link rel="stylesheet" href="css/medical_staff.css">
+    <style>
+        /* Additional Admin-specific styles */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
+        .container { max-width: 1400px; }
+        .header h2 { color: #d9534f; } /* Admin Red */
+        .form-section { background: #fff; border-radius: 8px; padding: 25px; margin-bottom: 30px; }
+        .form-section h3 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: bold; margin-bottom: 5px; color: #555; }
+        .form-group input, .form-group select {
+            padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em;
+        }
+        .form-actions { margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; text-align: right; }
+        .save-btn, .clear-btn, .search-btn { /* Added search-btn */
+            padding: 12px 20px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer;
+        }
+        .save-btn { background-color: #5cb85c; color: white; }
+        .clear-btn { background-color: #f0ad4e; color: white; margin-left: 10px; }
+        .search-btn { background-color: #0275d8; color: white; } /* Search button style */
+
+        /* Search & User tables */
+        .table-wrapper { background: #fff; border-radius: 8px; padding: 20px; margin-top: 30px;}
+        .table-wrapper h4 { margin-top: 0; }
+        .user-table { width: 100%; border-collapse: collapse; }
+        
+        .user-table td {
+            padding: 12px 10px; 
+            text-align: left; 
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .user-table th { 
+            background-color: #e9ecef; 
+            color: #333; 
+            font-weight: 600; 
+            padding: 12px 10px; 
+            text-align: left; 
+            border-bottom: 2px solid #ccc; 
+        }
+        
+        .user-table .actions { text-align: right; }
+        .user-table .edit-btn, .user-table .delete-btn {
+            padding: 5px 10px; border: none; border-radius: 4px; color: white; cursor: pointer; margin-left: 5px;
+        }
+        .user-table .edit-btn { background-color: #0275d8; }
+        .user-table .delete-btn { background-color: #d9534f; }
+
+        /* Role-specific fields (initially hidden) */
+        .student-fields, .employee-fields, .staff-fields { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Admin Dashboard: User Management</h2>
+            <button id="logout-btn" class="back-btn" style="background-color: #d9534f;">Logout</button>
+        </div>
+
+        <div class="form-section">
+            <h3 id="form-title">Add New User</h3>
+            <form id="user-form">
+                <input type="hidden" id="edit-user-id" value="">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="user-role">User Role</label>
+                        <select id="user-role" required>
+                            <option value="" disabled selected>Select a role...</option>
+                            <option value="student">Student</option>
+                            <option value="employee">Employee</option>
+                            <option value="medical-staff">Medical Staff</option>
+                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-id">ID (Roll No / Emp Code)</label>
+                        <input type="text" id="user-id" placeholder="e.g., 22UCS123 or E101" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-name">Full Name</label>
+                        <input type="text" id="user-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-password">Password</label>
+                        <input type="password" id="user-password" placeholder="Min. 6 characters. Required for new users." required>
+                        <small>Min. 6 characters. Required for new users.</small>
+                    </div>
+                </div>
+
+                <div class="form-grid student-fields" id="student-fields">
+                    <div class="form-group">
+                        <label for="student-hostel">Hostel No.</label>
+                        <input type="text" id="student-hostel" placeholder="e.g., BH-1">
+                    </div>
+                    <div class="form-group">
+                        <label for="student-room">Room No.</label>
+                        <input type="text" id="student-room" placeholder="e.g., C-202">
+                    </div>
+                </div>
+
+                <div class="form-grid employee-fields" id="employee-fields">
+                    <div class="form-group">
+                        <label for="emp-designation">Designation</label>
+                        <input type="text" id="emp-designation" placeholder="e.g., Professor">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-department">Department</label>
+                        <input type="text" id="emp-department" placeholder="e.g., CSE">
+                    </div>
+                </div>
+
+                <div class="form-grid staff-fields" id="staff-fields">
+                    <div class="form-group">
+                        <label for="staff-role">Staff Role</label>
+                        <select id="staff-role">
+                            <option value="nurse">Nurse</option>
+                            <option value="doctor">Doctor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="save-btn">Save User</button>
+                    <button type="button" class="clear-btn" id="clear-form-btn">Clear Form</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-section">
+            <h3>Manage Existing User</h3>
+            <form id="search-form">
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: 1 / -1;"> <label for="search-input">Search by ID or Name</label>
+                        <input type="text" id="search-input" placeholder="Enter Roll No, Employee Code, or Name..." required>
+                    </div>
+                </div>
+                <div class="form-actions" style="border-top: none; padding-top: 0;">
+                    <button type="submit" class="search-btn">Search</button>
+                </div>
+            </form>
+            
+            <div id="search-results-container">
+                </div>
+        </div>
+        
+        </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
